@@ -2,12 +2,12 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-
 namespace UnitTestProject3
 {
     class WaitHelpers
     {
         private IWebDriver driver;
+
         public WaitHelpers(IWebDriver driver)
         {
             this.driver = driver;

@@ -5,79 +5,73 @@ using OpenQA.Selenium.Chrome;
 
 namespace UnitTestProject3
 {
+    [TestFixture]
     public class GmailTest
     {
         private IWebDriver driver;
         private const string UserName = "Alyona Testtask";
-        private string recipientContent= "a.bayaryna@godeltech.com";
-        private static string timeSpan = DateTime.UtcNow.ToString();
-        private string subjectContent = "Message "+ timeSpan;
-        private string bodyContent = "MessageBody "+ timeSpan;
-     
+        private const string RecipientContent = "a.bayaryna@godeltech.com";
+        private readonly static string timeSpan = DateTime.UtcNow.ToString();
+        private readonly string subjectContent = "Message " + timeSpan;
+        private readonly string bodyContent = "MessageBody " + timeSpan;
+
+        private const string Email = "alyonatest456";
+        private const string Password = "Test4567";
+        
         [SetUp]
         public void DriverInit()
         {
-            driver = new ChromeDriver {Url = "http://gmail.com"};
+            driver = new ChromeDriver { Url = "http://gmail.com" };
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
-            var login = new LogInPage(driver);
-            login.ToSetUserLoginAndPassword();
+            new LogInPage(driver).PerformLogin(Email, Password);
         }
 
         [Test]
         public void LoginTest()
         {
-            var login = new LogInPage(driver);
-            login.VarifyLogInAction();
+            new LogInPage(driver).VerifyLogIn(UserName);
         }
 
         [Test]
         public void CreateMailAndSaveDraft()
         {
             var message = new NewMessagePage(driver);
-            var draftsFolder = new DraftsPage(driver);
 
-            message.CreateNewMail(recipientContent, subjectContent, bodyContent);
-            string actualSubjectContent = message.GetSubject();
+            message.CreateNewMail(RecipientContent, subjectContent, bodyContent);
             message.CloseNewMessageWindowToSaveAsDraft();
-            message.OpenDraftsFolder();
-     
-            draftsFolder.VerifyDraftSaved(actualSubjectContent);
+
+            new DraftsPage(driver).OpenSavedDraft(subjectContent);
+            new DraftMessagePage(driver).VerifyDraftSaved(subjectContent);
         }
 
         [Test]
         public void CreateMailSaveDraftAndCheckDraftContent()
         {
             var message = new NewMessagePage(driver);
-            var draftsFolder = new DraftsPage(driver);
-            var draftmessage = new DraftMessagePage(driver);
-
-            message.CreateNewMail(recipientContent, subjectContent, bodyContent);
+            message.CreateNewMail(RecipientContent, subjectContent, bodyContent);
             message.CloseNewMessageWindowToSaveAsDraft();
-           
-            draftsFolder.OpenSavedDraft();
-            draftmessage.VerifySavedDraftContent(recipientContent, subjectContent, bodyContent);
+
+            new DraftsPage(driver).OpenSavedDraft(subjectContent);
+            new DraftMessagePage(driver).VerifySavedDraftContent(RecipientContent, subjectContent, bodyContent);
         }
 
         [Test]
         public void CreateMailSaveDraftAndSend()
         {
             var message = new NewMessagePage(driver);
-            var draftsFolder = new DraftsPage(driver);
-            var draftmessage = new DraftMessagePage(driver);
-            var sentFolder = new SentPage(driver);
-
-            message.CreateNewMail(recipientContent, subjectContent, bodyContent);
-            string actualSubjectContent = message.GetSubject();
+            message.CreateNewMail(RecipientContent, subjectContent, bodyContent);
             message.CloseNewMessageWindowToSaveAsDraft();
-         
-            draftsFolder.OpenSavedDraft();
 
-            draftmessage.ClickSendButton();
+            var draftsFolder = new DraftsPage(driver);
+            draftsFolder.OpenSavedDraft(subjectContent);
+            new DraftMessagePage(driver).ClickSendButton();
 
-            draftsFolder.VerifySentDraftAbsent(actualSubjectContent);
-            sentFolder.VerifySentMailPresent(actualSubjectContent);
+            draftsFolder.VerifySentDraftAbsent(subjectContent);
+
+            var sentFolder = new SentPage(driver);
+            sentFolder.VerifySentMailPresent(subjectContent);
         }
 
         [Test]
@@ -85,11 +79,11 @@ namespace UnitTestProject3
         {
             var login = new LogInPage(driver);
             login.SignOutClickButton();
-            login.VarifyLogOutAction();
+            login.VerifyLogOut();
         }
 
         [TearDown]
-        public void DriverQuite()
+        public void DriverQuit()
         {
             driver.Quit();
         }

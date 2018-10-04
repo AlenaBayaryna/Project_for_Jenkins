@@ -1,44 +1,49 @@
-﻿using OpenQA.Selenium;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
 using System.Linq;
 using System.Threading;
 
 namespace UnitTestProject3
 {
-    class DraftsPage: BaseEmailListPage
+    class DraftsPage : BaseEmailListPage
     {
         private readonly By draftsList = By.XPath("//div[@role='main']//tr");
         private readonly By lastDraft = By.XPath("//div[@role='main']//tr[1]");
 
-        private WaitHelpers waiter;
-
         public DraftsPage(IWebDriver driver) : base(driver)
         {
             EmailListLocator = draftsList;
-            this.waiter = new WaitHelpers(driver);
-        }
-      
-        public void VerifyDraftSaved(string content)
-        {
-            var list = driver.FindElements(draftsList);
-            Assert.That(list.Any(el => el.FindElement(lastDraft).Text.Contains(content)), Is.True,
-                "Draft doesn't exist");
         }
 
-        public void OpenSavedDraft()
+        public void OpenSavedDraft(string subjectContent)
         {
             OpenDraftsFolder();
             Thread.Sleep(1000);
             WaitForEmailList();
-            driver.FindElement(lastDraft).Click();
+            bool w = IsListContainsEmail(subjectContent);
+            if (w != false)
+            {
+                driver.FindElement(lastDraft).Click();
+            }
+            else throw new System.NullReferenceException("This draft doesn't exist");
         }
-        
+
         public void VerifySentDraftAbsent(string content)
         {
             OpenDraftsFolder();
+            Assert.IsFalse(IsSubjectEqual(content), "Mail is still in 'Drafts'");
+        }
+
+        public bool IsListContainsEmail(string content)
+        {
             var list = driver.FindElements(draftsList);
-            Assert.That(list.Any(el => el.FindElement(lastDraft).Text.Equals(content)), Is.False,
-                "Mail is still in 'Drafts’");
+            return list.Any(el => el.FindElement(lastDraft).Text.Contains(content));
+        }
+
+        public bool IsSubjectEqual(string content)
+        {
+            var list = driver.FindElements(draftsList);
+            return list.Any(el => el.FindElement(lastDraft).Text.Equals(content));
         }
     }
 }

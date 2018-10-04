@@ -4,10 +4,11 @@ using System.Linq;
 
 namespace UnitTestProject3
 {
-    class SentPage: BaseEmailListPage
+    class SentPage : BaseEmailListPage
     {
         private readonly By sentMailsList = By.XPath("//div[@role='main']//tr");
-        private readonly By lastSentMail = By.XPath("//div[@role='main']//tr[1]");
+        private readonly By lastSentMail = By.XPath("//div[@role='main']//tr[1]//span[@class='bog']");
+        private readonly By sentMailSubject = By.XPath("//div[@class='ha']/h2");
 
         public SentPage(IWebDriver driver) : base(driver)
         {

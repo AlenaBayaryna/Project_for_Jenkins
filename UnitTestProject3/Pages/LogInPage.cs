@@ -5,40 +5,36 @@ namespace UnitTestProject3
 {
     class LogInPage : NavigationPage
     {
-        private By idTextBox = By.Id("identifierId");
-        private By idButton = By.Id("identifierNext");
-        private By passwordTextBox = By.Name("password");
-        private By passwordButton = By.Id("passwordNext");
-
-        private const string UserName = "Alyona Testtask";
-        private WaitHelpers waiter;
+        private readonly By idTextBox = By.Id("identifierId");
+        private readonly By idButton = By.Id("identifierNext");
+        private readonly By passwordTextBox = By.Name("password");
+        private readonly By passwordButton = By.Id("passwordNext");
 
         public LogInPage(IWebDriver driver) : base(driver)
         {
-          this.waiter = new WaitHelpers(driver);
         }
-        
-        public void ToSetUserLoginAndPassword()
+
+        public void PerformLogin(string Email, string Password)
         {
             driver.FindElement(idTextBox).Clear();
-            driver.FindElement(idTextBox).SendKeys("alyonatest456");
+            driver.FindElement(idTextBox).SendKeys(Email);
             driver.FindElement(idButton).Click();
 
             waiter.WaitClickableMethod(passwordTextBox);
-            IWebElement passField = driver.FindElement(passwordTextBox);
+            var passField = driver.FindElement(passwordTextBox);
             passField.Clear();
-            passField.SendKeys("Test4567");
+            passField.SendKeys(Password);
 
-            waiter.WaitClickableMethod(passwordTextBox);
+            waiter.WaitClickableMethod(passwordButton);
             IWebElement passButton = driver.FindElement(passwordButton);
             passButton.Click();
         }
-        public void VarifyLogInAction()
+        public void VerifyLogIn(string UserName)
         {
-            string actualAccountName = base.ToGetAccountNameMethod();
-            StringAssert.Contains(UserName, actualAccountName, "Acccount username is incorrect");
+            string actualAccountName = base.GetAccountName();
+            StringAssert.Contains(UserName, actualAccountName, "Account username is incorrect");
         }
-        public void VarifyLogOutAction()
+        public void VerifyLogOut()
         {
             Assert.That(driver.FindElement(passwordButton).Enabled, Is.True,
                 "Draft doesn't exist");

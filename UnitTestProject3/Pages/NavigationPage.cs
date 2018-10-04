@@ -1,33 +1,33 @@
 ﻿using OpenQA.Selenium;
 
-
 namespace UnitTestProject3
 {
     public class NavigationPage
     {
         protected IWebDriver driver;
-        private WaitHelpers waiter;
+        internal WaitHelpers waiter;
+
 
         public NavigationPage(IWebDriver driver)
         {
             this.driver = driver;
-            this.waiter = new WaitHelpers(driver);
+            waiter = new WaitHelpers(driver);
         }
 
-        private By accountButton = By.XPath("//a[contains(@aria-label,'Google Account')][@role='button']");
+        private readonly By accountButton = By.XPath("//a[contains(@aria-label,'Google Account')][@role='button']");
 
-        public By accountUserName =
-            By.XPath("//div[contains(@aria-label,'Account Information')]//div[contains(.,'alyonatest')]");
+        public readonly By accountUserName =
+            By.XPath("//div[contains(@aria-label,'Account Information')]//div[@class='gb_Cb gb_Db']");
 
-        private By composeNewMessageButton = By.XPath("//div[@class='aic']//div[@role='button']");
+        private readonly By composeNewMessageButton = By.XPath("//div[@class='aic']//div[@role='button']");
 
-        private By draftsFolder = By.XPath("//a[@title[contains(.,'Drafts')]]");
-        private By sentMailsFolder = By.XPath("//a[@title[contains(.,'Sent')]]");
+        private readonly By draftsFolder = By.XPath("//a[@title[contains(.,'Drafts')]]");
+        private readonly By sentMailsFolder = By.XPath("//a[@title[contains(.,'Sent')]]");
 
-        private By signOutButton = By.XPath("//a[contains(.,'Sign out')]");
+        private readonly By signOutButton = By.XPath("//a[contains(.,'Sign out')]");
 
-       
-        public string ToGetAccountNameMethod()
+
+        public string GetAccountName()
         {
             waiter.WaitClickableMethod(accountButton);
             driver.FindElement(accountButton).Click();
@@ -54,7 +54,7 @@ namespace UnitTestProject3
         {
             waiter.WaitClickableMethod(accountButton);
             driver.FindElement(accountButton).Click();
-            waiter.WaitClickableMethod(accountButton);
+            waiter.WaitClickableMethod(signOutButton);
             driver.FindElement(signOutButton).Click();
         }
     }

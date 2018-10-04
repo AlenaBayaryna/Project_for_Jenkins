@@ -3,7 +3,7 @@
 namespace UnitTestProject3
 {
     public class BaseEmailListPage : NavigationPage
-    {        
+    {
         public BaseEmailListPage(IWebDriver driver) : base(driver)
         {
 
