@@ -29,20 +29,17 @@ namespace UnitTestProject3
 
         public string GetAccountName()
         {
-            waiter.WaitClickableMethod(accountButton);
-            driver.FindElement(accountButton).Click();
+            waiter.WaitClickableMethod(accountButton).Click();
             return driver.FindElement(accountUserName).Text;
         }
         public void ClickComposeNewMailButton()
         {
-            waiter.WaitClickableMethod(composeNewMessageButton);
-            driver.FindElement(composeNewMessageButton).Click();
+            waiter.WaitClickableMethod(composeNewMessageButton).Click();
         }
 
         public void OpenDraftsFolder()
         {
-            waiter.WaitVisibleMethod(draftsFolder);
-            driver.FindElement(draftsFolder).Click();
+            waiter.WaitVisibleMethod(draftsFolder).Click();
         }
 
         public void OpenSentFolder()
@@ -52,10 +49,8 @@ namespace UnitTestProject3
 
         public void SignOutClickButton()
         {
-            waiter.WaitClickableMethod(accountButton);
-            driver.FindElement(accountButton).Click();
-            waiter.WaitClickableMethod(signOutButton);
-            driver.FindElement(signOutButton).Click();
+            waiter.WaitClickableMethod(accountButton).Click();
+            waiter.WaitClickableMethod(signOutButton).Click();
         }
     }
 }

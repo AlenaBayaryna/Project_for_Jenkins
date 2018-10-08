@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
-using System.Linq;
 
 namespace UnitTestProject3
 {
@@ -19,8 +18,7 @@ namespace UnitTestProject3
         {
             OpenSentFolder();
             WaitForEmailList();
-            var list = driver.FindElements(sentMailsList);
-            Assert.That(list.Any(el => el.FindElement(lastSentMail).Text.Contains(content)), Is.True,
+            Assert.That((IsListContainsEmail(content, sentMailsList, lastSentMail)), Is.True,
                 "Draft doesn't exist");
         }
     }

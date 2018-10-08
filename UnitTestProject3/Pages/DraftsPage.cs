@@ -20,8 +20,8 @@ namespace UnitTestProject3
             OpenDraftsFolder();
             Thread.Sleep(1000);
             WaitForEmailList();
-            bool w = IsListContainsEmail(subjectContent);
-            if (w != false)
+            
+            if (IsListContainsEmail(subjectContent,draftsList,lastDraft))
             {
                 driver.FindElement(lastDraft).Click();
             }
@@ -32,12 +32,6 @@ namespace UnitTestProject3
         {
             OpenDraftsFolder();
             Assert.IsFalse(IsSubjectEqual(content), "Mail is still in 'Drafts'");
-        }
-
-        public bool IsListContainsEmail(string content)
-        {
-            var list = driver.FindElements(draftsList);
-            return list.Any(el => el.FindElement(lastDraft).Text.Contains(content));
         }
 
         public bool IsSubjectEqual(string content)

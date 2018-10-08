@@ -46,14 +46,12 @@ namespace UnitTestProject3
 
         public void CloseNewMessageWindowToSaveAsDraft()
         {
-            waiter.WaitClickableMethod(newMessageWindowCloseButton);
-            driver.FindElement(newMessageWindowCloseButton).Click();
+            waiter.WaitClickableMethod(newMessageWindowCloseButton).Click();
         }
 
         public void ClickSendButton()
         {
-            waiter.WaitClickableMethod(newMessageSendButton);
-            driver.FindElement(newMessageSendButton).Click();
+            waiter.WaitClickableMethod(newMessageSendButton).Click();
         }
     }
 }

@@ -12,15 +12,17 @@ namespace UnitTestProject3
         {
             this.driver = driver;
         }
-        public void WaitClickableMethod(By elementLocator)
+        public IWebElement WaitClickableMethod(By elementLocator)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(elementLocator));
+            return driver.FindElement(elementLocator);
         }
-        public void WaitVisibleMethod(By elementLocator)
+        public IWebElement WaitVisibleMethod(By elementLocator)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(elementLocator));
+            return driver.FindElement(elementLocator);
         }
         public bool UntilCustomCondition(Func<IWebDriver, bool> condition)
         {

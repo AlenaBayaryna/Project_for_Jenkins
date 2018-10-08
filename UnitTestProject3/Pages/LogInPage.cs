@@ -25,9 +25,8 @@ namespace UnitTestProject3
             passField.Clear();
             passField.SendKeys(Password);
 
-            waiter.WaitClickableMethod(passwordButton);
-            IWebElement passButton = driver.FindElement(passwordButton);
-            passButton.Click();
+            waiter.WaitClickableMethod(passwordButton).Click();
+          
         }
         public void VerifyLogIn(string UserName)
         {

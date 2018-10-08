@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System.Linq;
 
 namespace UnitTestProject3
 {
@@ -13,6 +14,11 @@ namespace UnitTestProject3
         public void WaitForEmailList()
         {
             new WaitHelpers(driver).UntilCustomCondition(driver => driver.FindElements(EmailListLocator).Count > 0);
+        }
+        public bool IsListContainsEmail(string content, By itemsList, By lastItem)
+        {
+            var list = driver.FindElements(itemsList);
+            return list.Any(el => el.FindElement(lastItem).Text.Contains(content));
         }
     }
 }
