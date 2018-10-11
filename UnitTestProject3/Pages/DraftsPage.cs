@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using OpenQA.Selenium;
 using System.Linq;
 using System.Threading;
@@ -7,12 +8,8 @@ namespace UnitTestProject3
 {
     class DraftsPage : BaseEmailListPage
     {
-        private readonly By draftsList = By.XPath("//div[@role='main']//tr");
-        private readonly By lastDraft = By.XPath("//div[@role='main']//tr[1]");
-
         public DraftsPage(IWebDriver driver) : base(driver)
         {
-            EmailListLocator = draftsList;
         }
 
         public void OpenSavedDraft(string subjectContent)
@@ -20,12 +17,7 @@ namespace UnitTestProject3
             OpenDraftsFolder();
             Thread.Sleep(1000);
             WaitForEmailList();
-            
-            if (IsListContainsEmail(subjectContent,draftsList,lastDraft))
-            {
-                driver.FindElement(lastDraft).Click();
-            }
-            else throw new System.NullReferenceException("This draft doesn't exist");
+            GetEmailContainsRequiredSubjectContent(subjectContent);
         }
 
         public void VerifySentDraftAbsent(string content)
@@ -36,8 +28,8 @@ namespace UnitTestProject3
 
         public bool IsSubjectEqual(string content)
         {
-            var list = driver.FindElements(draftsList);
-            return list.Any(el => el.FindElement(lastDraft).Text.Equals(content));
+            var list = driver.FindElements(mailsList);
+            return list.Any(el => el.FindElement(mailSubject).Text.Equals(content));
         }
     }
 }

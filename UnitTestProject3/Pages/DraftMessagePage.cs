@@ -6,6 +6,7 @@ namespace UnitTestProject3
     class DraftMessagePage : NavigationPage
     {
         private readonly By draftMessageRecipient = By.XPath("//input[@name='to']");
+        private readonly By draftMessageFilledRecipient = By.XPath("//div[@class='aoD hl']");
         private readonly By draftMessageSubject = By.XPath("//input[@name='subject']");
         private readonly By draftMessageBody = By.XPath("//div[@aria-label='Message Body']");
         private readonly By draftMessageSendButton = By.XPath("//tbody//td[@class='gU Up']//div[@role='button']");
@@ -43,6 +44,7 @@ namespace UnitTestProject3
 
         public void ClickSendButton()
         {
+            driver.FindElement(draftMessageFilledRecipient).Click(); 
             waiter.UntilCustomCondition(driver => driver.FindElement(draftMessageSendButton).Enabled);
             driver.FindElement(draftMessageSendButton).Click();
         }

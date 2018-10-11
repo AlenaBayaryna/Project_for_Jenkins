@@ -1,24 +1,36 @@
 ﻿using OpenQA.Selenium;
+using System;
 using System.Linq;
 
 namespace UnitTestProject3
 {
     public class BaseEmailListPage : NavigationPage
     {
+        public readonly By mailsList = By.XPath("//div[@role='main']//tr");
+        public readonly By mailSubject = By.XPath(".//span[@class='bog']");
+     
         public BaseEmailListPage(IWebDriver driver) : base(driver)
         {
-
         }
-        public By EmailListLocator { get; set; }
-
+       
         public void WaitForEmailList()
         {
-            new WaitHelpers(driver).UntilCustomCondition(driver => driver.FindElements(EmailListLocator).Count > 0);
+            new WaitHelpers(driver).UntilCustomCondition(driver => driver.FindElements(mailsList).Count > 0);
         }
-        public bool IsListContainsEmail(string content, By itemsList, By lastItem)
+
+        public bool IsListContainsEmail(string content)
         {
-            var list = driver.FindElements(itemsList);
-            return list.Any(el => el.FindElement(lastItem).Text.Contains(content));
+            var list = driver.FindElements(mailsList);
+            return list.Any(el => el.FindElement(mailSubject).Text.Contains(content));
+        }
+
+        public void GetEmailContainsRequiredSubjectContent(string content)
+        {
+            if (IsListContainsEmail(content))
+            {
+                driver.FindElement(mailSubject).Click();
+            }
+            else throw new NullReferenceException("This draft doesn't exist");
         }
     }
 }
