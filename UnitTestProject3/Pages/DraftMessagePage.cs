@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
+using System.Threading;
 
 namespace UnitTestProject3
 {
@@ -7,9 +8,11 @@ namespace UnitTestProject3
     {
         private readonly By draftMessageRecipient = By.XPath("//input[@name='to']");
         private readonly By draftMessageFilledRecipient = By.XPath("//div[@class='aoD hl']");
+        private readonly By draftMessageFilledRecipientAprooved = By.XPath("//div[@class='vT']");
         private readonly By draftMessageSubject = By.XPath("//input[@name='subject']");
         private readonly By draftMessageBody = By.XPath("//div[@aria-label='Message Body']");
         private readonly By draftMessageSendButton = By.XPath("//tbody//td[@class='gU Up']//div[@role='button']");
+        private readonly By draftMessageDeleteButton = By.XPath("//div[@class='og T-I-J3']");
 
         public DraftMessagePage(IWebDriver driver) : base(driver)
         {
@@ -44,9 +47,16 @@ namespace UnitTestProject3
 
         public void ClickSendButton()
         {
-            driver.FindElement(draftMessageFilledRecipient).Click(); 
+            driver.FindElement(draftMessageFilledRecipient).Click();
             waiter.UntilCustomCondition(driver => driver.FindElement(draftMessageSendButton).Enabled);
+            waiter.UntilCustomCondition(driver => driver.FindElement(draftMessageFilledRecipientAprooved).Enabled);
             driver.FindElement(draftMessageSendButton).Click();
+        }
+
+        public void DeleteCreatedDraft()
+        {
+            driver.FindElement(draftMessageDeleteButton).Click();
+            Thread.Sleep(1000);
         }
     }
 }

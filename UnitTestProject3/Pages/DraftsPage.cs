@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 using OpenQA.Selenium;
 using System.Linq;
 using System.Threading;

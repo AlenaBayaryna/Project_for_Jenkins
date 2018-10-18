@@ -42,8 +42,13 @@ namespace UnitTestProject3
             message.CreateNewMail(RecipientContent, subjectContent, bodyContent);
             message.CloseNewMessageWindowToSaveAsDraft();
 
-            new DraftsPage(driver).OpenSavedDraft(subjectContent);
-            new DraftMessagePage(driver).VerifyDraftSaved(subjectContent);
+            var draftsFolder = new DraftsPage(driver);
+            var draftsMessage = new DraftMessagePage(driver);
+
+            draftsFolder.OpenSavedDraft(subjectContent);
+            draftsMessage.VerifyDraftSaved(subjectContent);
+            draftsFolder.OpenSavedDraft(subjectContent);
+            draftsMessage.DeleteCreatedDraft();
         }
 
         [Test]
@@ -53,8 +58,13 @@ namespace UnitTestProject3
             message.CreateNewMail(RecipientContent, subjectContent, bodyContent);
             message.CloseNewMessageWindowToSaveAsDraft();
 
-            new DraftsPage(driver).OpenSavedDraft(subjectContent);
-            new DraftMessagePage(driver).VerifySavedDraftContent(RecipientContent, subjectContent, bodyContent);
+            var draftsFolder = new DraftsPage(driver);
+            var draftsMessage = new DraftMessagePage(driver);
+
+            draftsFolder.OpenSavedDraft(subjectContent);
+            draftsMessage.VerifySavedDraftContent(RecipientContent, subjectContent, bodyContent);
+            draftsFolder.OpenSavedDraft(subjectContent);
+            draftsMessage.DeleteCreatedDraft();
         }
 
         [Test]
@@ -69,7 +79,6 @@ namespace UnitTestProject3
             new DraftMessagePage(driver).ClickSendButton();
 
             draftsFolder.VerifySentDraftAbsent(subjectContent);
-
             var sentFolder = new SentPage(driver);
             sentFolder.VerifySentMailPresent(subjectContent);
         }
