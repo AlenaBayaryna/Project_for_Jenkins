@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using System;
 using System.Linq;
 
 namespace UnitTestProject3
@@ -8,7 +7,7 @@ namespace UnitTestProject3
     {
         public readonly By mailsList = By.XPath("//div[@role='main']//tr");
         public readonly By mailSubject = By.XPath(".//span[@class='bog']");
-     
+       
         public BaseEmailListPage(IWebDriver driver) : base(driver)
         {
         }
@@ -26,11 +25,8 @@ namespace UnitTestProject3
 
         public void GetEmailContainsRequiredSubjectContent(string content)
         {
-            if (IsListContainsEmail(content))
-            {
-                driver.FindElement(mailSubject).Click();
-            }
-            else throw new NullReferenceException("This draft doesn't exist");
+            var list = driver.FindElements(mailsList);
+            list.First(el => el.FindElement(mailSubject).Text.Contains(content)).Click();
         }
     }
 }
