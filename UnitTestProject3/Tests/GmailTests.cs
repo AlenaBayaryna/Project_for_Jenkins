@@ -11,10 +11,6 @@ namespace UnitTestProject3
         private IWebDriver driver;
         private const string UserName = "Alyona Testtask";
         private const string RecipientContent = "a.bayaryna@godeltech.com";
-        private readonly static string timeSpan = DateTime.UtcNow.ToString();
-        private readonly string subjectContent = "Message " + timeSpan;
-        private readonly string bodyContent = "MessageBody " + timeSpan;
-
         private const string Email = "alyonatest456";
         private const string Password = "Test4567";
         
@@ -28,6 +24,18 @@ namespace UnitTestProject3
             new LogInPage(driver).PerformLogin(Email, Password);
         }
 
+        public string GenerateUniqSubjectContent()
+        {
+            Guid guidName = Guid.NewGuid();
+            return "Message " + guidName;
+        }
+
+        public string GenerateUniqBodyContent()
+        {
+            Guid guidName = Guid.NewGuid();
+            return "MessageBody " + guidName;
+        }
+
         [Test]
         public void LoginTest()
         {
@@ -37,39 +45,36 @@ namespace UnitTestProject3
         [Test]
         public void CreateMailAndSaveDraft()
         {
-            var message = new NewMessagePage(driver);
+            string subjectContent = GenerateUniqSubjectContent();
+            string bodyContent = GenerateUniqBodyContent();
 
+            var message = new NewMessagePage(driver);
             message.CreateNewMail(RecipientContent, subjectContent, bodyContent);
             message.CloseNewMessageWindowToSaveAsDraft();
 
-            var draftsFolder = new DraftsPage(driver);
-            var draftsMessage = new DraftMessagePage(driver);
-
-            draftsFolder.OpenSavedDraft(subjectContent);
-            draftsMessage.VerifyDraftSaved(subjectContent);
-            draftsFolder.OpenSavedDraft(subjectContent);
-            draftsMessage.DeleteCreatedDraft();
+            new DraftsPage(driver).OpenSavedDraft(subjectContent);
+            new DraftMessagePage(driver).VerifyDraftSaved(subjectContent);
         }
 
         [Test]
         public void CreateMailSaveDraftAndCheckDraftContent()
         {
+            string subjectContent = GenerateUniqSubjectContent();
+            string bodyContent = GenerateUniqBodyContent();
+
             var message = new NewMessagePage(driver);
             message.CreateNewMail(RecipientContent, subjectContent, bodyContent);
             message.CloseNewMessageWindowToSaveAsDraft();
-
-            var draftsFolder = new DraftsPage(driver);
-            var draftsMessage = new DraftMessagePage(driver);
-
-            draftsFolder.OpenSavedDraft(subjectContent);
-            draftsMessage.VerifySavedDraftContent(RecipientContent, subjectContent, bodyContent);
-            draftsFolder.OpenSavedDraft(subjectContent);
-            draftsMessage.DeleteCreatedDraft();
+            
+            new DraftsPage(driver).OpenSavedDraft(subjectContent);
+            new DraftMessagePage(driver).VerifySavedDraftContent(RecipientContent, subjectContent, bodyContent);
         }
 
         [Test]
         public void CreateMailSaveDraftAndSend()
         {
+            string subjectContent = GenerateUniqSubjectContent();
+            string bodyContent = GenerateUniqBodyContent();
             var message = new NewMessagePage(driver);
             message.CreateNewMail(RecipientContent, subjectContent, bodyContent);
             message.CloseNewMessageWindowToSaveAsDraft();

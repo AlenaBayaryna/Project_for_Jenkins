@@ -20,6 +20,7 @@ namespace UnitTestProject3
 
         public void VerifyDraftSaved(string subjectContent)
         {
+            waiter.UntilCustomCondition(driver => driver.FindElement(draftMessageSubject).Enabled);
             StringAssert.AreEqualIgnoringCase(subjectContent, GetSubject(), "Message subject is incorrect");
         }
 
@@ -51,12 +52,6 @@ namespace UnitTestProject3
             waiter.UntilCustomCondition(driver => driver.FindElement(draftMessageSendButton).Enabled);
             waiter.UntilCustomCondition(driver => driver.FindElement(draftMessageFilledRecipientAprooved).Enabled);
             driver.FindElement(draftMessageSendButton).Click();
-        }
-
-        public void DeleteCreatedDraft()
-        {
-            driver.FindElement(draftMessageDeleteButton).Click();
-            Thread.Sleep(1000);
         }
     }
 }
