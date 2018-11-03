@@ -14,7 +14,7 @@ namespace UnitTestProject3
         }
         public IWebElement WaitClickableMethod(By elementLocator)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(0));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(elementLocator));
             return driver.FindElement(elementLocator);
         }
