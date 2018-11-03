@@ -17,6 +17,8 @@ namespace UnitTestProject3
             Thread.Sleep(1000);
             Assert.That((IsListContainsEmail(content)), Is.True,
                 "Sent mail doesn't exist");
+
+            KAHJvcfKHAsdxfkjchdsxfjhgjkhgzsfc
         }
     }
 }
